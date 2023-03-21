@@ -7,7 +7,7 @@ class Moto (mar: String, col: String, pre: Int ){
         var precio: Int = pre
         var velocidadMax: Int = 0
 
-            get() = field + 3   
+            get() = field + 3
 
             set(vel) {
                 if (vel < 200){
