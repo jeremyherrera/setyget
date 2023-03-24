@@ -2,67 +2,55 @@ package com.example.quickstart
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.quickstart.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.Tab
 
 class MainActivity : AppCompatActivity() {
 
-
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager2: ViewPager2
-    private lateinit var adapter: FragmentPageAdapter
+        private lateinit var biding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        biding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(biding.root)
+        replaceFragment(Home())
 
 
-        tabLayout = findViewById(R.id.TabLayout)
-        viewPager2 = findViewById(R.id.ViewPager2)
+        biding.bottomNavigationView.setOnItemSelectedListener {
 
-        adapter = FragmentPageAdapter(supportFragmentManager, lifecycle)
+        when(it.itemId){
 
-        tabLayout.addTab(tabLayout.newTab().setText("Firsh"))
-        tabLayout.addTab(tabLayout.newTab().setText("Second"))
+                R.id.home -> replaceFragment(Home())
+                R.id.profile -> replaceFragment(Profile())
+                R.id.settings -> replaceFragment(settings())
 
+          else ->{
 
-        viewPager2.adapter = adapter
-
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: Tab?) {
-                if (tab != null){
-                    viewPager2.currentItem = tab.position
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-        })
-
-        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                tabLayout.selectTab(tabLayout.getTabAt(position))
-
-
-            }
-
-
-        })
-
-
-
+          }
 
         }
+        true
 
+    }
+
+
+
+
+  }
+
+       private fun replaceFragment(fragment: Fragment){
+
+           val fragmentManager = supportFragmentManager
+           val fragmentTransaction = fragmentManager.beginTransaction()
+           fragmentTransaction.replace(R.id.frame_layout,fragment)
+           fragmentTransaction.commit()
+
+
+       }
 
 
 }
